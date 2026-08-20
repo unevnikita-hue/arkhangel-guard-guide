@@ -18,6 +18,9 @@ input[type="text"]:focus { outline:3px solid rgba(12,106,79,.18); border-color:v
 .error { color:var(--danger); font-weight:700; }
 .memo { font-family:Georgia,"Times New Roman",serif; font-size:1.05rem; }
 .memo .warning { padding:14px 16px; border-left:4px solid #c57b16; background:#fff5df; font-family:Inter,system-ui,sans-serif; font-weight:700; }
+.highlight-flash { position:relative; overflow:hidden; margin:24px 0; padding:20px 18px; border:3px solid #ff2d00; border-radius:15px; background:linear-gradient(110deg,#fff000,#ff8a00,#ff3040,#fff000); background-size:300% 100%; color:#250700; font-family:Inter,system-ui,sans-serif; font-size:clamp(1.08rem,4.8vw,1.35rem); font-weight:950; line-height:1.25; text-align:center; text-shadow:0 1px 0 rgba(255,255,255,.55); box-shadow:0 0 0 5px rgba(255,45,0,.14),0 0 28px rgba(255,77,0,.55); animation:warning-shimmer 2.2s linear infinite,warning-pulse 1.1s ease-in-out infinite alternate; }
+@keyframes warning-shimmer { to { background-position:-300% 0; } }
+@keyframes warning-pulse { to { transform:scale(1.018); box-shadow:0 0 0 7px rgba(255,45,0,.2),0 0 40px rgba(255,40,0,.75); } }
 .memo-end { height:2px; margin-top:28px; }
 .confirmation { position:sticky; bottom:10px; z-index:2; }
 .lock-message { margin-top:0; color:var(--muted); }
@@ -34,4 +37,16 @@ dl { margin:28px 0; text-align:left; }
 dl div { display:flex; justify-content:space-between; gap:18px; padding:12px 0; border-bottom:1px solid var(--line); }
 dt { color:var(--muted); } dd { margin:0; font-weight:700; text-align:right; }
 .secondary-link { color:var(--accent); font-weight:800; }
+.alarm-open { overflow:hidden; }
+.alarm-overlay { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; overflow-y:auto; padding:18px; background:rgba(15,9,4,.82); backdrop-filter:blur(8px); }
+.alarm-overlay[hidden] { display:none; }
+.alarm-box { width:min(100%,560px); max-height:calc(100dvh - 36px); overflow-y:auto; padding:clamp(26px,7vw,48px); border:4px solid #ffde00; border-radius:24px; background:linear-gradient(145deg,#ff3b12,#bd001b); color:white; text-align:center; box-shadow:0 0 0 8px rgba(255,222,0,.18),0 24px 80px rgba(0,0,0,.55); animation:alarm-arrive .24s ease-out; }
+.alarm-icon { display:grid; place-items:center; width:74px; height:74px; margin:0 auto 14px; border-radius:50%; background:#ffe600; color:#b00018; font-size:3.2rem; font-weight:1000; line-height:1; box-shadow:0 0 26px rgba(255,230,0,.85); }
+.alarm-label { margin:0; color:#fff39a; font-size:.78rem; font-weight:900; letter-spacing:.16em; text-transform:uppercase; }
+.alarm-box h2 { margin:12px 0 24px; color:white; font-family:Inter,system-ui,sans-serif; font-size:clamp(1.55rem,7vw,2.5rem); line-height:1.08; text-wrap:balance; }
+.alarm-box button { margin:0; background:#ffe600; color:#7d0011; font-size:1.15rem; box-shadow:0 7px 0 #9b6400; }
+.alarm-box button:hover { background:#fff47a; }
+@keyframes alarm-arrive { from { opacity:0; transform:scale(.86); } }
+@media (max-height:600px) { .alarm-box{padding:18px}.alarm-icon{width:48px;height:48px;font-size:2rem;margin-bottom:8px}.alarm-box h2{font-size:1.35rem;margin:8px 0 16px} }
+@media (prefers-reduced-motion:reduce) { .highlight-flash,.alarm-box { animation:none; } html { scroll-behavior:auto; } }
 @media (max-width:520px) { .page{padding-top:22px}.card{border-radius:16px}.confirmation{position:static}.memo{font-size:1rem} }

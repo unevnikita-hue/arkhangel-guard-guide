@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Памятка охранника — демонстрация</title>
-  <link rel="stylesheet" href="public/style.css?v=20260820-2">
-  <script src="preview.js?v=20260820-2" defer></script>
+  <link rel="stylesheet" href="public/style.css?v=20260821-3">
+  <script src="preview.js?v=20260821-3" defer></script>
 </head>
 <body>
 <main class="page">
@@ -44,11 +44,19 @@
     <p>Спасибо, <strong id="success-fio"></strong>.</p>
     <dl>
       <div><dt>Дата и время</dt><dd id="success-time"></dd></div>
-      <div><dt>Версия памятки</dt><dd>2026-08-20-01</dd></div>
+      <div><dt>Версия памятки</dt><dd>2026-08-21-01</dd></div>
     </dl>
     <p class="preview-note">Это демонстрация интерфейса: персональные данные никуда не отправлялись и в журнал не записывались.</p>
     <a class="secondary-link" href="./">Вернуться к памятке</a>
   </section>
 </main>
+<div class="alarm-overlay" id="alarm-dialog" role="dialog" aria-modal="true" aria-labelledby="alarm-title" hidden>
+  <div class="alarm-box">
+    <div class="alarm-icon" aria-hidden="true">!</div>
+    <p class="alarm-label">Обратите внимание</p>
+    <h2 id="alarm-title"></h2>
+    <button type="button" id="alarm-answer"></button>
+  </div>
+</div>
 </body>
 </html>

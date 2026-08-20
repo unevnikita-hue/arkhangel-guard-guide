@@ -109,5 +109,13 @@ if (!isset($_SESSION['submission_id'])) {
     </form>
 <?php endif; ?>
 </main>
+<div class="alarm-overlay" id="alarm-dialog" role="dialog" aria-modal="true" aria-labelledby="alarm-title" hidden>
+    <div class="alarm-box">
+        <div class="alarm-icon" aria-hidden="true">!</div>
+        <p class="alarm-label">Обратите внимание</p>
+        <h2 id="alarm-title"></h2>
+        <button type="button" id="alarm-answer"></button>
+    </div>
+</div>
 </body>
 </html>
