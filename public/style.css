@@ -10,6 +10,7 @@ p, ul, ol { margin:.6rem 0 1rem; }
 li + li { margin-top:.4rem; }
 .eyebrow { color:var(--accent); font-size:.78rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
 .lead { color:var(--muted); font-size:1.08rem; }
+.preview-note { padding:12px 14px; border:1px solid #d7c58d; border-radius:12px; background:#fff8df; color:#5f5126; font-size:.92rem; }
 .card { margin:14px 0; padding:clamp(20px,5vw,38px); background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 12px 36px rgba(23,36,31,.06); }
 .identity label { display:block; margin-bottom:9px; font-weight:750; }
 input[type="text"] { width:100%; min-height:54px; padding:14px 15px; border:1.5px solid #aeb7b1; border-radius:12px; background:white; color:var(--ink); font:inherit; font-size:1rem; }

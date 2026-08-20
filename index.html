@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Памятка охранника — демонстрация</title>
+  <link rel="stylesheet" href="public/style.css">
+  <script src="preview.js" defer></script>
+</head>
+<body>
+<main class="page">
+  <header class="hero">
+    <p class="eyebrow">Архангел · сотрудникам</p>
+    <h1>Памятка сотрудника, прибывающего на вахту</h1>
+    <p class="lead">Перед подтверждением внимательно прочитайте памятку до конца.</p>
+    <p class="preview-note"><strong>Демонстрационная страница.</strong> Здесь можно проверить весь интерфейс. Запись в рабочий журнал включится после установки PHP-модуля в «Архангел».</p>
+  </header>
+
+  <form id="ack-form" novalidate>
+    <section class="card identity">
+      <label for="fio">Фамилия, имя и отчество</label>
+      <input id="fio" name="fio" type="text" maxlength="180" autocomplete="name" placeholder="Введите фамилию, имя и отчество полностью" required>
+      <p class="error" id="form-error" role="alert" hidden></p>
+    </section>
+
+    <article class="card memo" id="memo" aria-label="Текст памятки">
+      <p>Загружаем памятку…</p>
+    </article>
+
+    <section class="card confirmation" id="confirmation" aria-live="polite">
+      <p class="lock-message" id="lock-message">Прокрутите памятку до конца, чтобы открыть подтверждение.</p>
+      <label class="check-row">
+        <input id="acknowledged" name="acknowledged" type="checkbox" value="1" disabled required>
+        <span>Я подтверждаю, что ознакомился с памяткой</span>
+      </label>
+      <button id="submit-button" type="submit" disabled>Подтвердить ознакомление</button>
+    </section>
+  </form>
+
+  <section class="card success" id="success" hidden aria-labelledby="success-title">
+    <div class="success-mark" aria-hidden="true">✓</div>
+    <p class="eyebrow">Демонстрация завершена</p>
+    <h1 id="success-title">Ознакомление подтверждено</h1>
+    <p>Спасибо, <strong id="success-fio"></strong>.</p>
+    <dl>
+      <div><dt>Дата и время</dt><dd id="success-time"></dd></div>
+      <div><dt>Версия памятки</dt><dd>2026-08-20-01</dd></div>
+    </dl>
+    <p class="preview-note">Это демонстрация интерфейса: персональные данные никуда не отправлялись и в журнал не записывались.</p>
+    <a class="secondary-link" href="./">Вернуться к памятке</a>
+  </section>
+</main>
+</body>
+</html>
