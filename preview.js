@@ -6,13 +6,13 @@
   const message = document.querySelector('#lock-message');
   const error = document.querySelector('#form-error');
 
-  fetch('content/memo.php')
+  fetch('content/memo.html')
     .then((response) => {
       if (!response.ok) throw new Error('memo');
       return response.text();
     })
     .then((html) => {
-      memo.innerHTML = html.replace(/<\?php[\s\S]*?\?>/g, '') + '<div id="memo-end" class="memo-end" aria-hidden="true"></div>';
+      memo.innerHTML = html + '<div id="memo-end" class="memo-end" aria-hidden="true"></div>';
       const sentinel = document.querySelector('#memo-end');
       let unlocked = false;
       const unlock = () => {

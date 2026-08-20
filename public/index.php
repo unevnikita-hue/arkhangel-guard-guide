@@ -91,7 +91,7 @@ if (!isset($_SESSION['submission_id'])) {
         </section>
 
         <article class="card memo" aria-label="Текст памятки">
-            <?php require dirname(__DIR__) . '/content/memo.php'; ?>
+            <?php require dirname(__DIR__) . '/content/memo.html'; ?>
             <div id="memo-end" class="memo-end" aria-hidden="true"></div>
         </article>
 
