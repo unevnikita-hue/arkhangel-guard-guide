@@ -1,7 +1,9 @@
 (() => {
+  const ALARM_DELAY_MS = 2000;
   const form = document.querySelector('#ack-form');
   const memo = document.querySelector('#memo');
   const checkbox = document.querySelector('#acknowledged');
+  const personalDataConsent = document.querySelector('#personal-data-consent');
   const button = document.querySelector('#submit-button');
   const message = document.querySelector('#lock-message');
   const error = document.querySelector('#form-error');
@@ -17,6 +19,7 @@
     const pending = [];
     let current = null;
     let answered = 0;
+    let alarmTimer = null;
     const showAlarm = (trigger) => {
       current = trigger;
       title.textContent = trigger.dataset.alarmMessage;
@@ -28,7 +31,11 @@
       answer.focus();
     };
     const showNext = () => {
-      if (!current && pending.length) showAlarm(pending.shift());
+      if (current || alarmTimer || !pending.length) return;
+      alarmTimer = window.setTimeout(() => {
+        alarmTimer = null;
+        if (!current && pending.length) showAlarm(pending.shift());
+      }, ALARM_DELAY_MS);
     };
     const enqueue = (trigger) => {
       if (trigger.dataset.alarmSeen === '1') return;
@@ -91,6 +98,7 @@
         if (unlocked) return;
         unlocked = true;
         checkbox.disabled = false;
+        personalDataConsent.disabled = false;
         message.textContent = 'Памятка просмотрена до конца. Поставьте галочку для подтверждения.';
         message.classList.add('unlocked');
       };
@@ -120,18 +128,25 @@
     });
 
   checkbox.addEventListener('change', () => {
-    button.disabled = !checkbox.checked;
+    button.disabled = !(checkbox.checked && personalDataConsent.checked);
+  });
+  personalDataConsent.addEventListener('change', () => {
+    button.disabled = !(checkbox.checked && personalDataConsent.checked);
   });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const fio = document.querySelector('#fio').value.trim().replace(/\s+/g, ' ');
-    if (!fio) {
-      error.textContent = 'Введите ФИО.';
+    const parts = ['last-name', 'first-name', 'middle-name'].map((id) => document.querySelector(`#${id}`).value.trim().replace(/\s+/g, ' '));
+    const missingIndex = parts.findIndex((part) => !part);
+    if (missingIndex !== -1) {
+      const labels = ['фамилию', 'имя', 'отчество'];
+      error.textContent = `Введите ${labels[missingIndex]}.`;
       error.hidden = false;
-      document.querySelector('#fio').focus();
+      document.querySelector(`#${['last-name', 'first-name', 'middle-name'][missingIndex]}`).focus();
       return;
     }
+    if (!checkbox.checked || !personalDataConsent.checked) return;
+    const fio = parts.join(' ');
     error.hidden = true;
     form.hidden = true;
     document.querySelector('.hero').hidden = true;

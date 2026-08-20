@@ -1,4 +1,5 @@
 (() => {
+  const ALARM_DELAY_MS = 2000;
   const initAlarms = () => {
     const triggers = [...document.querySelectorAll('.alarm-trigger')];
     const dialog = document.querySelector('#alarm-dialog');
@@ -10,6 +11,7 @@
     const pending = [];
     let current = null;
     let answered = 0;
+    let alarmTimer = null;
     const showAlarm = (trigger) => {
       current = trigger;
       title.textContent = trigger.dataset.alarmMessage;
@@ -21,7 +23,11 @@
       answer.focus();
     };
     const showNext = () => {
-      if (!current && pending.length) showAlarm(pending.shift());
+      if (current || alarmTimer || !pending.length) return;
+      alarmTimer = window.setTimeout(() => {
+        alarmTimer = null;
+        if (!current && pending.length) showAlarm(pending.shift());
+      }, ALARM_DELAY_MS);
     };
     const enqueue = (trigger) => {
       if (trigger.dataset.alarmSeen === '1') return;
@@ -76,6 +82,7 @@
 
   const sentinel = document.querySelector('#memo-end');
   const checkbox = document.querySelector('#acknowledged');
+  const personalDataConsent = document.querySelector('#personal-data-consent');
   const button = document.querySelector('#submit-button');
   const reachedInput = document.querySelector('#reached-bottom');
   const message = document.querySelector('#lock-message');
@@ -84,6 +91,7 @@
   const unlock = () => {
     reachedInput.value = '1';
     checkbox.disabled = false;
+    personalDataConsent.disabled = false;
     message.textContent = 'Памятка просмотрена до конца. Поставьте галочку для подтверждения.';
     message.classList.add('unlocked');
   };
@@ -117,7 +125,10 @@
   checkBottom();
 
   checkbox.addEventListener('change', () => {
-    button.disabled = !checkbox.checked;
+    button.disabled = !(checkbox.checked && personalDataConsent.checked);
+  });
+  personalDataConsent.addEventListener('change', () => {
+    button.disabled = !(checkbox.checked && personalDataConsent.checked);
   });
 
   form.addEventListener('submit', () => {

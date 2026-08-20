@@ -24,6 +24,21 @@ function normalizeFio(mixed $value, int $maxLength): string
     return $fio;
 }
 
+function normalizeNamePart(mixed $value, string $label, int $maxLength): string
+{
+    if (!is_string($value)) {
+        throw new InvalidArgumentException("Введите {$label}.");
+    }
+    $part = trim(preg_replace('/\s+/u', ' ', $value) ?? '');
+    if ($part === '') {
+        throw new InvalidArgumentException("Введите {$label}.");
+    }
+    if (mb_strlen($part, 'UTF-8') > $maxLength) {
+        throw new InvalidArgumentException(ucfirst($label) . ' слишком длинное.');
+    }
+    return $part;
+}
+
 function validateAcknowledgement(array $post, array $session, int $maxFioLength): string
 {
     $csrf = is_string($post['csrf_token'] ?? null) ? $post['csrf_token'] : '';
@@ -43,8 +58,19 @@ function validateAcknowledgement(array $post, array $session, int $maxFioLength)
     if (($post['acknowledged'] ?? '') !== '1') {
         throw new InvalidArgumentException('Подтвердите ознакомление с памяткой.');
     }
+    if (($post['personal_data_consent'] ?? '') !== '1') {
+        throw new InvalidArgumentException('Подтвердите согласие на обработку персональных данных.');
+    }
 
-    return normalizeFio($post['fio'] ?? null, $maxFioLength);
+    $fio = implode(' ', [
+        normalizeNamePart($post['last_name'] ?? null, 'фамилию', 59),
+        normalizeNamePart($post['first_name'] ?? null, 'имя', 59),
+        normalizeNamePart($post['middle_name'] ?? null, 'отчество', 59),
+    ]);
+    if (mb_strlen($fio, 'UTF-8') > $maxFioLength) {
+        throw new InvalidArgumentException('ФИО слишком длинное.');
+    }
+    return $fio;
 }
 
 function appendAcknowledgement(string $path, array $event): void
@@ -127,6 +153,7 @@ function createEvent(string $fio, array $config, array $server): array
         'ip' => requestText($server, 'REMOTE_ADDR', 45),
         'user_agent' => requestText($server, 'HTTP_USER_AGENT', 500),
         'referer' => requestText($server, 'HTTP_REFERER', 1000),
+        'personal_data_consent' => true,
         'status' => 'acknowledged',
     ];
 }

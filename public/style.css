@@ -13,6 +13,8 @@ li + li { margin-top:.4rem; }
 .preview-note { padding:12px 14px; border:1px solid #d7c58d; border-radius:12px; background:#fff8df; color:#5f5126; font-size:.92rem; }
 .card { margin:14px 0; padding:clamp(20px,5vw,38px); background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 12px 36px rgba(23,36,31,.06); }
 .identity label { display:block; margin-bottom:9px; font-weight:750; }
+.identity h2 { margin:0 0 18px; }
+.name-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
 input[type="text"] { width:100%; min-height:54px; padding:14px 15px; border:1.5px solid #aeb7b1; border-radius:12px; background:white; color:var(--ink); font:inherit; font-size:1rem; }
 input[type="text"]:focus { outline:3px solid rgba(12,106,79,.18); border-color:var(--accent); }
 .error { color:var(--danger); font-weight:700; }
@@ -27,6 +29,7 @@ input[type="text"]:focus { outline:3px solid rgba(12,106,79,.18); border-color:v
 .lock-message.unlocked { color:var(--accent); font-weight:700; }
 .check-row { display:flex; gap:12px; align-items:flex-start; font-weight:700; }
 .check-row input { width:22px; height:22px; flex:0 0 auto; accent-color:var(--accent); }
+.consent-row { margin-top:16px; }
 button { width:100%; min-height:56px; margin-top:20px; border:0; border-radius:13px; background:var(--accent); color:white; font:inherit; font-weight:800; cursor:pointer; }
 button:hover:not(:disabled) { background:var(--accent-dark); }
 button:disabled { background:#c5cbc7; color:#707872; cursor:not-allowed; }
@@ -49,4 +52,5 @@ dt { color:var(--muted); } dd { margin:0; font-weight:700; text-align:right; }
 @keyframes alarm-arrive { from { opacity:0; transform:scale(.86); } }
 @media (max-height:600px) { .alarm-box{padding:18px}.alarm-icon{width:48px;height:48px;font-size:2rem;margin-bottom:8px}.alarm-box h2{font-size:1.35rem;margin:8px 0 16px} }
 @media (prefers-reduced-motion:reduce) { .highlight-flash,.alarm-box { animation:none; } html { scroll-behavior:auto; } }
+@media (max-width:620px) { .name-grid{grid-template-columns:1fr} }
 @media (max-width:520px) { .page{padding-top:22px}.card{border-radius:16px}.confirmation{position:static}.memo{font-size:1rem} }

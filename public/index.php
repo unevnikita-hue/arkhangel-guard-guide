@@ -20,12 +20,14 @@ require dirname(__DIR__) . '/src/functions.php';
 date_default_timezone_set($config['timezone']);
 
 $error = '';
-$fioValue = '';
+$nameValues = ['last_name' => '', 'first_name' => '', 'middle_name' => ''];
 $success = $_SESSION['success'] ?? null;
 unset($_SESSION['success']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fioValue = is_string($_POST['fio'] ?? null) ? trim($_POST['fio']) : '';
+    foreach (array_keys($nameValues) as $nameField) {
+        $nameValues[$nameField] = is_string($_POST[$nameField] ?? null) ? trim($_POST[$nameField]) : '';
+    }
     try {
         $fio = validateAcknowledgement($_POST, $_SESSION, $config['max_fio_length']);
         unset($_SESSION['submission_id']);
@@ -85,8 +87,12 @@ if (!isset($_SESSION['submission_id'])) {
 
     <form method="post" id="ack-form" novalidate>
         <section class="card identity">
-            <label for="fio">Фамилия, имя и отчество</label>
-            <input id="fio" name="fio" type="text" value="<?= h($fioValue) ?>" maxlength="180" autocomplete="name" placeholder="Введите фамилию, имя и отчество полностью" required>
+            <h2>Укажите ФИО</h2>
+            <div class="name-grid">
+                <div><label for="last-name">Фамилия</label><input id="last-name" name="last_name" type="text" value="<?= h($nameValues['last_name']) ?>" maxlength="59" autocomplete="family-name" placeholder="Иванов" required></div>
+                <div><label for="first-name">Имя</label><input id="first-name" name="first_name" type="text" value="<?= h($nameValues['first_name']) ?>" maxlength="59" autocomplete="given-name" placeholder="Иван" required></div>
+                <div><label for="middle-name">Отчество</label><input id="middle-name" name="middle_name" type="text" value="<?= h($nameValues['middle_name']) ?>" maxlength="59" autocomplete="additional-name" placeholder="Иванович" required></div>
+            </div>
             <?php if ($error !== ''): ?><p class="error" role="alert"><?= h($error) ?></p><?php endif; ?>
         </section>
 
@@ -100,6 +106,10 @@ if (!isset($_SESSION['submission_id'])) {
             <label class="check-row">
                 <input id="acknowledged" name="acknowledged" type="checkbox" value="1" disabled required>
                 <span>Я подтверждаю, что ознакомился с памяткой</span>
+            </label>
+            <label class="check-row consent-row">
+                <input id="personal-data-consent" name="personal_data_consent" type="checkbox" value="1" disabled required>
+                <span>Я согласен с обработкой персональных данных</span>
             </label>
             <input id="reached-bottom" name="reached_bottom" type="hidden" value="0">
             <input type="hidden" name="csrf_token" value="<?= h((string) $_SESSION['csrf_token']) ?>">

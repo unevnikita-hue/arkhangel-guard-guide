@@ -33,6 +33,16 @@ for (const script of [app, preview]) {
 for (const page of [phpPage, previewPage]) {
   assert.ok(page.includes('id="alarm-dialog"'), 'page contains shared alarm dialog');
   assert.ok(page.includes('id="alarm-answer"'), 'page contains alarm answer button');
+  for (const field of ['last_name', 'first_name', 'middle_name']) {
+    assert.ok(page.includes(`name="${field}"`), `page contains required ${field} field`);
+  }
+  assert.equal((page.match(/maxlength="59"/g) ?? []).length, 3, 'all three name fields share the server length limit');
+  assert.ok(page.includes('name="personal_data_consent"'), 'page contains personal-data consent');
+}
+
+for (const script of [app, preview]) {
+  assert.ok(script.includes('ALARM_DELAY_MS = 2000'), 'alarms have a two-second delay');
+  assert.ok(script.includes('personal-data-consent'), 'submit button depends on personal-data consent');
 }
 
 assert.ok(css.includes('@keyframes warning-shimmer'), 'bright warnings shimmer');
